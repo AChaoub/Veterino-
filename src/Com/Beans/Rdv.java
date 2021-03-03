@@ -1,5 +1,7 @@
 package Com.Beans;
 
+
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,14 +20,19 @@ public class Rdv {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id_Question")
+	@Column(name = "id_Rdv")
 	private int idRdv;
 	
 	@Column(name = "motif_Rdv")
 	private String motifRdv;
 	
+	@Column(name = "date_Rdv")
+	private String dateRdv;
+	
 	@Column(name ="acceptation_Rdv", nullable = false, columnDefinition = "boolean default false")
 	private boolean isAccepted = false;
+	
+	
 	
 	@ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
 	@JoinColumn(name = "identifiant_User")
@@ -37,11 +44,11 @@ public class Rdv {
 	}
 
 
-	public Rdv(int idRdv, String motifRdv, boolean isAccepted, User user) {
+	public Rdv(String motifRdv, String dateRdv, boolean isAccepted, User user) {
 		super();
-		this.idRdv = idRdv;
 		this.motifRdv = motifRdv;
-		this.isAccepted = false;
+		this.dateRdv = dateRdv;
+		this.isAccepted = isAccepted;
 		this.user = user;
 	}
 
@@ -63,6 +70,16 @@ public class Rdv {
 
 	public void setMotifRdv(String motifRdv) {
 		this.motifRdv = motifRdv;
+	}
+
+
+	public String getDateRdv() {
+		return dateRdv;
+	}
+
+
+	public void setDateRdv(String dateRdv) {
+		this.dateRdv = dateRdv;
 	}
 
 
@@ -88,8 +105,11 @@ public class Rdv {
 
 	@Override
 	public String toString() {
-		return "Rdv [idRdv=" + idRdv + ", motifRdv=" + motifRdv + ", isAccepted=" + isAccepted + ", user=" + user + "]";
+		return "Rdv [idRdv=" + idRdv + ", motifRdv=" + motifRdv + ", dateRdv=" + dateRdv + ", isAccepted=" + isAccepted
+				+ ", user=" + user + "]";
 	}
+
+
 	
 	
 	

@@ -53,5 +53,29 @@
         <servlet-name>AjouterQuestion</servlet-name>
         <url-pattern>/ajouterQuestion</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>EffectuerRdv</servlet-name>
+        <servlet-class>Com.Servlet.Servlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>EffectuerRdv</servlet-name>
+        <url-pattern>/effectuerRdv</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>Confimer</servlet-name>
+        <servlet-class>Com.Servlet.Servlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>Confimer</servlet-name>
+        <url-pattern>/confirmeRdv</url-pattern>
+    </servlet-mapping>
+ 
+    
+    
+    
   
 </web-app>

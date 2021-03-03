@@ -7,6 +7,7 @@ import Com.Beans.User;
 import java.util.ArrayList;
 
 import Com.Beans.Question;
+import Com.Beans.Rdv;
 import Com.Beans.Reponce;
 import DAO.ServicesImp.*;
 
@@ -22,12 +23,22 @@ public class Test {
 		ServicesUser UserDao = new ServicesUser();
 		ServicesQuestion QuestionDao =  new ServicesQuestion();
 		ServicesReponce ReponceDao = new ServicesReponce();
+		ServicesRdv RdvDao = new ServicesRdv();
 
 
 		
-//		User u1 = new User("GHIYATI", "ABDO", "AGHIYATI", "1234");		
-//		UserDao.saveUser(u1); 
+		User u1 = new User("CHAOUB", "Achraf", "ACHAOUB", "1234","Admin");		
+		UserDao.saveUser(u1); 
 		
+//		User u2 = new User("GHIYATI", "Abderezzak", "AGHIYATI", "1234");		
+//		UserDao.saveUser(u2); 
+//		
+//		User u3 = new User("AMIMI", "Jamal", "JCyber", "1234");		
+//		UserDao.saveUser(u3); 
+//
+//		User u4 = new User("BOUTAYEB", "Ahmed", "Citizen", "1234");		
+//		UserDao.saveUser(u4); 
+////		
 //		Question question1 = new Question("Est ce vous ouvrerez le samedi?",UserDao.getUser(2));
 //		QuestionDao.saveQuestion(question1);
 //		
@@ -47,14 +58,22 @@ public class Test {
 //		}
 //		
 		
-		ArrayList<Question> lis = QuestionDao.getAllQuestionsByUser(2);
-//		ArrayList<Reponce> reps = ReponceDao.getAllReponcesByQuestion(1);
+		//ArrayList<Question> lis = QuestionDao.getAllQuestionsByUser(2);
+//		ArrayList<Rdv> reps = RdvDao.getAllRdvs();
 //		
-		int i =0;
-		for(Question qst :lis) {
-			i++;
-			System.out.println("Question de MR :"+qst.getUser().getLastName().toString() + "\n \t question "+i+": "+qst.getDescriptionQuestions());	
-		}
+//		int i =0;
+//		for(Rdv qst :reps) {
+//			i++;
+//			System.out.println("RDV de MR :"+qst.getUser().getFirstName()+ "\n \t question "+i+": "+qst.getMotifRdv());	
+//		}
+		
+		
+//	   Rdv rdv = RdvDao.getRdv(10);
+//	   System.out.println(rdv.toString());
+	   
+	   //RdvDao.updateRdv(rdv);
+		
+		
 //		int id = 1;
 //		ArrayList<Reponce> reps = ReponceDao.getAllReponcesByQuestion(id);
 //			for(Reponce rep : reps) {

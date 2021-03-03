@@ -1,7 +1,12 @@
 package Com.Servlet;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,7 +19,9 @@ import javax.servlet.http.HttpSession;
 import DAO.ServicesImp.ServicesQuestion;
 import DAO.ServicesImp.ServicesReponce;
 import DAO.ServicesImp.ServicesUser;
+import DAO.ServicesImp.ServicesRdv;
 import Com.Beans.Question;
+import Com.Beans.Rdv;
 import Com.Beans.Reponce;
 import Com.Beans.User;
 
@@ -23,11 +30,13 @@ public class Servlet extends HttpServlet {
 	private ServicesUser userDao;
 	private ServicesQuestion questionDao;
 	private ServicesReponce reponceDao;
+	private ServicesRdv rdvDao;
 
 	public void init() {
 		userDao = new ServicesUser();
 		questionDao = new ServicesQuestion();
 		reponceDao = new ServicesReponce();
+		rdvDao  = new ServicesRdv();
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -72,8 +81,9 @@ public class Servlet extends HttpServlet {
 						int id = userDao.validate(username, password).getIdUser();
 						session.setAttribute("Session_USER", userDao.getUser(id));
 						page = "Page_Client.jsp";
-						ArrayList<Question> questionClientConnecte = questionDao.getAllQuestionsByUser(id);
-						request.setAttribute("ListQuestionUserConnecte", questionClientConnecte);
+						DonnesClientJsp(request, response);
+//						ArrayList<Question> questionClientConnecte = questionDao.getAllQuestionsByUser(id);
+//						request.setAttribute("ListQuestionUserConnecte", questionClientConnecte);
 						//DonnesClientJsp(request, response);
 					}
 					
@@ -94,12 +104,13 @@ public class Servlet extends HttpServlet {
 			User user = (User) session.getAttribute("Session_USER");
 			User admin = (User) session.getAttribute("Session_ADMIN");
 			Question questionR = questionDao.getQuestion(id_Question);
-			Reponce reponce = new Reponce(reponce_Text, questionR);
-			reponceDao.saveReponce(reponce);
+			
 			
 			if(user!=null) {
 				User userConnecte = userDao.getUser(user.getIdUser());
 				if(userConnecte.getRole().equals("Utilisateur")) {
+					Reponce reponce = new Reponce(reponce_Text, questionR,user);
+					reponceDao.saveReponce(reponce);
 					DonnesClientJsp(request, response);
 					request.getRequestDispatcher("Page_Client.jsp").forward(request, response);
 					
@@ -107,6 +118,8 @@ public class Servlet extends HttpServlet {
 			}else if(admin!=null) {
 				User adminConnecte = userDao.getUser(admin.getIdUser());
 				if(adminConnecte.getRole().equals("Admin")){
+					Reponce reponce = new Reponce(reponce_Text, questionR,admin);
+					reponceDao.saveReponce(reponce);
 					DonnesAdminJsp(request, response);
 					request.getRequestDispatcher("Page_Veterinaire.jsp").forward(request, response);
 				}
@@ -124,6 +137,30 @@ public class Servlet extends HttpServlet {
 			questionDao.saveQuestion(question);
 			DonnesClientJsp(request, response);
 			request.getRequestDispatcher("Page_Client.jsp").forward(request, response);
+		}
+		else if (path.equals("/effectuerRdv")) {
+
+			HttpSession session = request.getSession(true);
+			User user = (User) session.getAttribute("Session_USER");
+
+			// int id_User = user.getIdUser();
+			String motifRdv = request.getParameter("motifRdv");
+			String dateRdv =request.getParameter("dateRdv") ;
+
+			Rdv rdv = new Rdv(motifRdv,dateRdv, false, user);
+			rdvDao.saveRdv(rdv);
+			DonnesClientJsp(request, response);
+			request.getRequestDispatcher("Page_Client.jsp").forward(request, response);
+		}
+		else if (path.equals("/confirmeRdv")) {
+
+			int Rdv = Integer.parseInt(request.getParameter("Rdv"));
+
+			Rdv rdvSelectionne = rdvDao.getRdv(Rdv);
+
+			rdvDao.updateRdv(rdvSelectionne);
+			DonnesAdminJsp(request, response);
+			request.getRequestDispatcher("Page_Veterinaire.jsp").forward(request, response);
 		}
 	}
 
@@ -143,7 +180,9 @@ public class Servlet extends HttpServlet {
 	public void DonnesAdminJsp(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		ArrayList<Question> listQuestions = questionDao.getAllQuestions();
+		ArrayList<Rdv>  listRdvs = rdvDao.getAllRdvs();
 		request.setAttribute("listesQuestions", listQuestions);
+		request.setAttribute("ListRdvs",listRdvs);
 	}
 	
 	public void DonnesClientJsp(HttpServletRequest request, HttpServletResponse response)
@@ -154,7 +193,9 @@ public class Servlet extends HttpServlet {
 		int id = user.getIdUser();
 		
 		ArrayList<Question> listQuestionParClient = questionDao.getAllQuestionsByUser(id);
+		ArrayList<Rdv>  listRdvParClient = rdvDao.getAllRdvsByUser(id);
 		request.setAttribute("ListQuestionUserConnecte", listQuestionParClient);
+		request.setAttribute("ListRdvUserConnecte",listRdvParClient);
 	}
 
 	

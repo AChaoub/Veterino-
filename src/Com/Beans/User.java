@@ -41,8 +41,8 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
 	private List<Question> questions = new ArrayList<Question>();
 	
-//	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
-//	private List<Rdv> rdvs = new ArrayList<Rdv>();
+	@OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+	private List<Rdv> rdvs = new ArrayList<Rdv>();
 	
 
 
@@ -124,8 +124,13 @@ public class User {
 		this.questions = questions;
 	}
 	
+	public List<Rdv> getRdvs() {
+		return rdvs;
+	}
 
-	
+	public void setRdvs(List<Rdv> rdvs) {
+		this.rdvs = rdvs;
+	}
 
 	@Override
 	public String toString() {

@@ -25,6 +25,10 @@ public class Reponce {
 	private String DescriptionReponse;
 	
 	@ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+	@JoinColumn(name = "identifiant")
+	private User user;
+	
+	@ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
 	@JoinColumn(name = "identifiant_Question")
 	private Question question;
 	
@@ -35,10 +39,11 @@ public class Reponce {
 		super();
 	}
 
-	public Reponce(String descriptionReponse, Question question) {
+	public Reponce(String descriptionReponse, Question question,User user) {
 		super();
 		DescriptionReponse = descriptionReponse;
 		this.question = question;
+		this.user = user;
 	}
 
 	public int getIdReponce() {
@@ -71,11 +76,4 @@ public class Reponce {
 				+ question + "]";
 	}
 	
-	
-	
-	
-	
-	
-
-
 }
